@@ -1,4 +1,5 @@
 ﻿using restlessmedia.Module.Data.EF;
+using System;
 using System.Linq;
 
 namespace restlessmedia.Module.Place.Data
@@ -8,7 +9,7 @@ namespace restlessmedia.Module.Place.Data
     public PlaceRepository(DatabaseContext context)
       : base(context)
     {
-      _databaseContext = context;
+      _databaseContext = context ?? throw new ArgumentNullException(nameof(context));
     }
 
     public VPlace Save(IPlace place)

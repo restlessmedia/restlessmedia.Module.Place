@@ -7,7 +7,7 @@ nuget:
 before_build:
 - cmd: nuget restore
 build:
-  project: restlessmedia.Module.Contact.sln
+  project: restlessmedia.Module.Place.sln
   publish_nuget: true
   include_nuget_references: true
   verbosity: minimal

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace restlessmedia.Module.Place
 {
-  public class GoogleGeoProvider : IGeoProvider
+  internal class GoogleGeoProvider : IGeoProvider
   {
     public GoogleGeoProvider()
       : base() { }

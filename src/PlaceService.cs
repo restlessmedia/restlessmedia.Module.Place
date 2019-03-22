@@ -4,7 +4,7 @@ using System;
 
 namespace restlessmedia.Module.Place
 {
-  public class PlaceService : IPlaceService
+  internal class PlaceService : IPlaceService
   {
     public PlaceService(IGeoProvider geoProvider, IPlaceDataProvider placeDataProvider)
     {
