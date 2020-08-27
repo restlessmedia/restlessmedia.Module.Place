@@ -5,7 +5,7 @@
     <Product>restlessmedia.Module.Place</Product>
     <Description>Module place library.</Description>
     <Copyright>Copyright restlessmedia 2020</Copyright>
-    <Version>2.0.0</Version>
+    <Version>3.0.0</Version>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <FileVersion>2.0.0.0</FileVersion>
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -24,16 +24,25 @@
     <PackageReference Include="Dapper" Version="2.0.35" />
     <PackageReference Include="EnterpriseLibrary.Common" Version="6.0.1304.0" />
     <PackageReference Include="EnterpriseLibrary.TransientFaultHandling" Version="6.0.1304.0" />
-    <PackageReference Include="EntityFramework" Version="6.2.0" />
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="FastMember" Version="1.5.0" />
     <PackageReference Include="GoogleMapsApi" Version="0.70.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="restlessmedia.Module" Version="7.0.1" />
-    <PackageReference Include="restlessmedia.Module.Address" Version="1.0.0" />
+    <PackageReference Include="restlessmedia.Module.Address" Version="3.0.0" />
     <PackageReference Include="restlessmedia.Module.Data.EF" Version="2.0.0" />
     <PackageReference Include="SqlBuilder" Version="1.16.3" />
     <PackageReference Include="SqlBuilder.DataServices" Version="2.0.0" />
     <PackageReference Include="StackExchange.Redis.StrongName" Version="1.2.6" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="restlessmedia.Module.Place.module" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="restlessmedia.Module.Place.module">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -43,5 +52,7 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
 </Project>
+
+
 
 
