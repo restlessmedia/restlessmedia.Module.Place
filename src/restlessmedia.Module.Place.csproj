@@ -5,9 +5,9 @@
     <Product>restlessmedia.Module.Place</Product>
     <Description>Module place library.</Description>
     <Copyright>Copyright restlessmedia 2020</Copyright>
-    <Version>3.0.0</Version>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-    <FileVersion>2.0.0.0</FileVersion>
+    <Version>3.0.3</Version>
+    <AssemblyVersion>3.0.3</AssemblyVersion>
+    <FileVersion>3.0.3</FileVersion>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <Authors>Phil Cooper</Authors>
     <PackageId>restlessmedia.Module.Place</PackageId>
@@ -28,10 +28,10 @@
     <PackageReference Include="FastMember" Version="1.5.0" />
     <PackageReference Include="GoogleMapsApi" Version="0.70.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="restlessmedia.Module" Version="7.0.1" />
-    <PackageReference Include="restlessmedia.Module.Address" Version="3.0.0" />
-    <PackageReference Include="restlessmedia.Module.Data.EF" Version="2.0.0" />
-    <PackageReference Include="SqlBuilder" Version="1.16.3" />
+    <PackageReference Include="restlessmedia.Module" Version="7.0.4" />
+    <PackageReference Include="restlessmedia.Module.Address" Version="3.0.6" />
+    <PackageReference Include="restlessmedia.Module.Data.EF" Version="2.2.1" />
+    <PackageReference Include="SqlBuilder" Version="2.0.1" />
     <PackageReference Include="SqlBuilder.DataServices" Version="2.0.0" />
     <PackageReference Include="StackExchange.Redis.StrongName" Version="1.2.6" />
   </ItemGroup>
@@ -52,6 +52,8 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
 </Project>
+
+
 
 
 
