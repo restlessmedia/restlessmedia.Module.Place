@@ -11,8 +11,7 @@ namespace restlessmedia.Module.Place.Data
   public class PlaceSqlDataProvider : SqlDataProviderBase
   {
     public PlaceSqlDataProvider(IDataContext context)
-      : base(context)
-    { }
+      : base(context) { }
 
     public TPlace Read<TPlace, TAddress, TMarker>(int placeId)
       where TPlace : PlaceEntity
@@ -27,37 +26,63 @@ namespace restlessmedia.Module.Place.Data
           p.Address = a;
           a.Marker = m;
           return p;
-        }, new { placeId = placeId }, commandType: CommandType.StoredProcedure, splitOn: "AddressId,Latitude").FirstOrDefault();
+        }, new { placeId }, commandType: CommandType.StoredProcedure, splitOn: "AddressId,Latitude").FirstOrDefault();
       });
     }
 
-    public void Save(ModelCollection<PlaceEntity> places)
+    public void Save(PlaceEntity place)
     {
-      using (DatabaseContext context = CreateDatabaseContext())
-      {
-        foreach (PlaceEntity place in places)
-        {
-          // TODO: fix up magic number
-          place.Address.Marker.Round(6);
+      // TODO: fix up magic number
+      place.Address?.Marker?.Round(6);
 
-          PlaceRepository placeRepository = new PlaceRepository(context);
-          VPlace vPlace = placeRepository.Save(place);
-          context.SaveChanges();
-          place.PlaceId = vPlace.PlaceId;
-        }
+      using (IDbConnection connection =  DataContext.ConnectionFactory.CreateConnection())
+      {
+        LicenseHelper.SetContext(connection, DataContext.LicenseSettings);
+
+        DynamicParameters parameters = new DynamicParameters(new
+        {
+          place.PlaceType,
+          place.Address?.AddressId,
+          place.Address?.KnownAs,
+          place.Address?.NameNumber,
+          place.Address?.Address01,
+          place.Address?.Address02,
+          place.Address?.PostCode,
+          place.Address?.CountryCode,
+          place.Address?.Town,
+          place.Address?.City,
+          place.Address?.Marker?.Latitude,
+          place.Address?.Marker?.Longitude,
+        });
+
+        parameters.Add("placeId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+        connection.Execute("dbo.SPSavePlace", parameters, commandType: CommandType.StoredProcedure);
+
+        place.PlaceId = parameters.Get<int>("placeId");
       }
     }
 
     public PlaceEntity NearestPlace(PlaceType type, double latitude, double longitude)
     {
-      return Query<PlaceEntity>("dbo.SPNearestPlace", new { placeType = (int)type, latitude = latitude, longitude = longitude }).FirstOrDefault();
+      return Query<PlaceEntity>("dbo.SPNearestPlace", new { placeType = (int)type, latitude, longitude }).FirstOrDefault();
     }
 
     public Nearest Nearest(PlaceType type, double latitude, double longitude)
     {
+      const string sql = @"
+          SELECT TOP 1
+            P.KnownAs Title
+          , P.Latitude
+          , P.Longitude
+        FROM dbo.VPlace P
+        WHERE P.LicenseId = @licenseId
+        ORDER BY dbo.GetDistanceBetween(@latitude, @longitude, P.Latitude, P.Longitude) ASC";
+
       return Query((connection) =>
       {
-        return connection.Query<Nearest, Marker, Nearest>("dbo.SPNearestPlaceTitle", (n, m) => { n.Marker = m; return n; }, new { placeType = (int)type, latitude = latitude, longitude = longitude }, commandType: CommandType.StoredProcedure, splitOn: "Latitude").FirstOrDefault();
+        return connection.Query<Nearest, Marker, Nearest>(sql, (n, m) => { n.Marker = m; return n; }, new { placeType = (int)type, latitude, longitude, licenseId = LicenseHelper.GetLicenseId(connection, DataContext.LicenseSettings) }, commandType: CommandType.StoredProcedure, splitOn: "Latitude")
+          .FirstOrDefault();
       });
     }
 
@@ -77,11 +102,11 @@ namespace restlessmedia.Module.Place.Data
       return Query((connection) =>
       {
         IEnumerable<PlaceEntity> data = connection.Query<PlaceEntity, AddressEntity, Marker, PlaceEntity>("dbo.SPListPlaces", (p, a, m) =>
-       {
-         p.Address = a ?? new AddressEntity();
-         a.Marker = m;
-         return p;
-       }, new { page = page, maxPerPage = maxPerPage }, commandType: CommandType.StoredProcedure, splitOn: "AddressId,Latitude");
+        {
+          p.Address = a ?? new AddressEntity();
+          a.Marker = m;
+          return p;
+        }, new { page, maxPerPage }, commandType: CommandType.StoredProcedure, splitOn: "AddressId,Latitude");
 
         if (getCount)
         {
@@ -90,11 +115,6 @@ namespace restlessmedia.Module.Place.Data
 
         return new ModelCollection<PlaceEntity>(data);
       });
-    }
-
-    private DatabaseContext CreateDatabaseContext()
-    {
-      return new DatabaseContext(DataContext);
     }
   }
 }

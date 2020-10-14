@@ -22,12 +22,15 @@ namespace restlessmedia.Module.Place
 
     public void Save(PlaceEntity place)
     {
-      Save(ModelCollection<PlaceEntity>.One(place));
+      _placeDataProvider.Save(place);
     }
 
     public void Save(ModelCollection<PlaceEntity> places)
     {
-      _placeDataProvider.Save(places);
+      foreach (PlaceEntity place in places)
+      {
+        Save(place);
+      }
     }
 
     public Nearest Nearest(PlaceType type, double latitude, double longitude)

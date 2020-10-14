@@ -7,7 +7,6 @@ namespace restlessmedia.Module.Place
   {
     public void RegisterComponents(ContainerBuilder containerBuilder)
     {
-      containerBuilder.RegisterType<DatabaseContext>().SingleInstance();
       containerBuilder.RegisterType<GoogleGeoProvider>().As<IGeoProvider>().SingleInstance(); 
       containerBuilder.RegisterType<PlaceService>().As<IPlaceService>().SingleInstance();
       containerBuilder.RegisterType<PlaceDataProvider>().As<IPlaceDataProvider>().SingleInstance();

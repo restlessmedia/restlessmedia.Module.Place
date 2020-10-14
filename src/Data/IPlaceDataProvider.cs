@@ -10,7 +10,7 @@ namespace restlessmedia.Module.Place.Data
       where TAddress : AddressEntity, new()
       where TMarker : Marker;
 
-    void Save(ModelCollection<PlaceEntity> places);
+    void Save(PlaceEntity place);
 
     PlaceEntity NearestPlace(PlaceType type, double latitude, double longitude);
 
