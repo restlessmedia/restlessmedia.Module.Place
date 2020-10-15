@@ -14,7 +14,7 @@ namespace restlessmedia.Module.Place
 
     public Marker FindMarker(string address)
     {
-      GeocodingResponse geocode = GoogleMaps.Geocode.Query(new GeocodingRequest()
+      GeocodingResponse geocode = GoogleMaps.Geocode.Query(new GeocodingRequest
       {
         Address = address
       });
@@ -26,7 +26,7 @@ namespace restlessmedia.Module.Place
 
     public AddressEntity Find(double latitude, double longitude, PlaceType type = PlaceType.Station)
     {
-      GeocodingResponse geocode = GoogleMaps.Geocode.Query(new GeocodingRequest()
+      GeocodingResponse geocode = GoogleMaps.Geocode.Query(new GeocodingRequest
       {
         Location = new Location(latitude, longitude)
       });
