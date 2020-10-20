@@ -81,7 +81,7 @@ namespace restlessmedia.Module.Place.Data
 
       return Query((connection) =>
       {
-        return connection.Query<Nearest, Marker, Nearest>(sql, (n, m) => { n.Marker = m; return n; }, new { placeType = (int)type, latitude, longitude, licenseId = LicenseHelper.GetLicenseId(connection, DataContext.LicenseSettings) }, commandType: CommandType.StoredProcedure, splitOn: "Latitude")
+        return connection.Query<Nearest, Marker, Nearest>(sql, (n, m) => { n.Marker = m; return n; }, new { placeType = (int)type, latitude, longitude, licenseId = LicenseHelper.GetLicenseId(connection, DataContext.LicenseSettings) }, commandType: CommandType.Text, splitOn: "Latitude")
           .FirstOrDefault();
       });
     }
