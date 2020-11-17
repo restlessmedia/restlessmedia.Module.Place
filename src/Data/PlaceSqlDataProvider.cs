@@ -37,8 +37,6 @@ namespace restlessmedia.Module.Place.Data
 
       using (IDbConnection connection =  DataContext.ConnectionFactory.CreateConnection())
       {
-        LicenseHelper.SetContext(connection, DataContext.LicenseSettings);
-
         DynamicParameters parameters = new DynamicParameters(new
         {
           place.PlaceType,
