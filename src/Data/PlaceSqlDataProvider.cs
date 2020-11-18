@@ -57,6 +57,7 @@ namespace restlessmedia.Module.Place.Data
 
         connection.Execute("dbo.SPSavePlace", parameters, commandType: CommandType.StoredProcedure);
 
+        // set the id to the identity
         place.PlaceId = parameters.Get<int>("placeId");
       }
     }
